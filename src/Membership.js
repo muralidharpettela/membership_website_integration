@@ -8,9 +8,10 @@ import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
-import { Calendar } from "primereact/calendar";
 import moment from "moment";
 import { useCreateMember } from "./services/DataServices";
+import { ProgressSpinner } from "primereact/progressspinner";
+import App from "./App.css"
 
 function MembershipPortal() {
   let emptyItem = {
@@ -65,6 +66,8 @@ function MembershipPortal() {
             detail: response.message,
             life: 3000,
           });
+          setProductDialog(false);
+          setProduct(emptyItem);
         },
         onError: (response) => {
           console.log(response);
@@ -76,8 +79,6 @@ function MembershipPortal() {
           });
         },
       });
-      setProductDialog(false);
-      setProduct(emptyItem);
     }
   };
 
@@ -88,12 +89,6 @@ function MembershipPortal() {
     setProduct(_product);
   };
 
-  const onDateChange = (e, name) => {
-    let _product = { ...product };
-    _product[`${name}`] = e.value;
-    setProduct(_product);
-  };
-
   const productDialogFooter = (
       <React.Fragment>
         <Button
@@ -101,8 +96,14 @@ function MembershipPortal() {
             icon="pi pi-times"
             className="p-button-text"
             onClick={hideDialog}
+            disabled={createMember.isLoading}
         />
-        <Button label="Save" icon="pi pi-check" onClick={saveProduct} />
+        <Button
+            label="Save"
+            icon="pi pi-check"
+            onClick={saveProduct}
+            disabled={createMember.isLoading}
+        />
       </React.Fragment>
   );
 
@@ -111,11 +112,19 @@ function MembershipPortal() {
         <div className="pt-2">
           <Toast ref={toast} />
 
-          {/*<div className="text-3xl text-800 font-bold mb-4">*/}
-          {/*  Membership Management Portal*/}
-          {/*</div>*/}
+          {createMember.isLoading && (
+              <div className="spinner-container">
+                <ProgressSpinner />
+                <p>Your membership is being created...</p>
+              </div>
+          )}
 
-          <Button label="New Membership Registration" icon="pi pi-plus" className="p-button-success mb-3" onClick={openNew} />
+          <Button
+              label="New Membership Registration"
+              icon="pi pi-plus"
+              className="p-button-success mb-3"
+              onClick={openNew}
+          />
 
           <Dialog
               visible={productDialog}
@@ -127,6 +136,12 @@ function MembershipPortal() {
               footer={productDialogFooter}
               onHide={hideDialog}
           >
+            {createMember.isLoading && (
+                <div className="dialog-spinner-container">
+                  <ProgressSpinner />
+                  <p>Your membership is being created...</p>
+                </div>
+            )}
             <div className="field">
               <div className="formgrid grid">
                 <div className="field col-12">
@@ -157,7 +172,6 @@ function MembershipPortal() {
                       value={product.street}
                       onChange={(e) => onInputChange(e, "street")}
                       required
-                      autoFocus
                       className={classNames({
                         "p-invalid": submitted && !product.street,
                       })}
@@ -178,7 +192,6 @@ function MembershipPortal() {
                       value={product.plz}
                       onChange={(e) => onInputChange(e, "plz")}
                       required
-                      autoFocus
                       className={classNames({
                         "p-invalid": submitted && !product.plz,
                       })}
@@ -194,7 +207,6 @@ function MembershipPortal() {
                       value={product.city}
                       onChange={(e) => onInputChange(e, "city")}
                       required
-                      autoFocus
                       className={classNames({
                         "p-invalid": submitted && !product.city,
                       })}
@@ -214,7 +226,6 @@ function MembershipPortal() {
                     value={product.country}
                     onChange={(e) => onInputChange(e, "country")}
                     required
-                    autoFocus
                     className={classNames({
                       "p-invalid": submitted && !product.country,
                     })}
@@ -230,7 +241,6 @@ function MembershipPortal() {
                     value={product.mobile}
                     onChange={(e) => onInputChange(e, "mobile")}
                     required
-                    autoFocus
                     className={classNames({
                       "p-invalid": submitted && !product.mobile,
                     })}
@@ -244,7 +254,6 @@ function MembershipPortal() {
                   value={product.email}
                   onChange={(e) => onInputChange(e, "email")}
                   required
-                  autoFocus
                   className={classNames({
                     "p-invalid": submitted && !product.email,
                   })}
@@ -252,24 +261,6 @@ function MembershipPortal() {
               {submitted && !product.email && (
                   <small className="p-error">Email is required.</small>
               )}
-            </div>
-            <div className="field">
-              <div className="form-grid grid">
-                <div className="field col-6">
-                  <label htmlFor="date">Start Date</label>
-                  <Calendar
-                      inputId="startDate"
-                      value={product.startDate}
-                      onChange={(e) => onDateChange(e, "startDate")}
-                      showIcon
-                      required
-                      autoFocus
-                      className={classNames({
-                        "p-invalid": submitted && !product.startDate,
-                      })}
-                  />
-                </div>
-              </div>
             </div>
           </Dialog>
         </div>
