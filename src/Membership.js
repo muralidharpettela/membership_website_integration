@@ -64,7 +64,7 @@ function MembershipPortal() {
             severity: "success",
             summary: "Successful",
             detail: response.message,
-            life: 3000,
+            life: 5000,
           });
           setProductDialog(false);
           setProduct(emptyItem);
@@ -75,7 +75,7 @@ function MembershipPortal() {
             severity: "error",
             summary: "Error",
             detail: response.response.data.detail,
-            life: 3000,
+            life: 5000,
           });
         },
       });
@@ -99,6 +99,7 @@ function MembershipPortal() {
             disabled={createMember.isLoading}
         />
         <Button
+            className="button p-button p-component p-button-success"
             label="Save"
             icon="pi pi-check"
             onClick={saveProduct}
@@ -186,7 +187,7 @@ function MembershipPortal() {
             <div className="field">
               <div className="formgrid grid">
                 <div className="field col-6">
-                  <label htmlFor="plz">Plz</label>
+                  <label htmlFor="plz">ZIP Code</label>
                   <InputText
                       id="plz"
                       value={product.plz}
