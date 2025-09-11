@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from 'axios';
 
-const API_URL = 'https://app-membership.onrender.com';
+const API_URL = 'https://app-membership-ded.onrender.com';
 
 const API_KEY = "5172e400065503a482d22cbe4e5fb76870f883e1b6faa2fb2d8170773b559a35"
 
