@@ -5,12 +5,13 @@ const API_URL = 'https://api.my-server.online';
 
 const API_KEY = "5172e400065503a482d22cbe4e5fb76870f883e1b6faa2fb2d8170773b559a35"
 
+
 export const createMember = async (requestBody: any) => {
 
   return axios
     .post(`${API_URL}/create_member_website`, requestBody, {
       headers: {
-          'access_token': API_KEY
+          'X-API-Key': API_KEY
 
       },
     })
